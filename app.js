@@ -17,11 +17,11 @@ let users = [
 ]
 
 app.get('/', (req, res) => {
-  res.send('Hello World!\n');
+  return res.send('Hello World!\n');
  });
 
 app.get('/users', (req, res) => {
-  res.json(users);
+  return res.json(users);
 })
 
 app.get('/users/:id', (req, res) => {
@@ -31,8 +31,13 @@ app.get('/users/:id', (req, res) => {
       error: 'Incorrect id'
     });
   }
-  console.log(id);
-  res.end();
+  let user = users.filter((user) => user.id === id)[0];
+  if (!user) {
+    return res.status(404).json({
+      error: 'Unknown user'
+    });
+  }
+  return res.json(user);
 })
 
 app.listen(3000, () => {
