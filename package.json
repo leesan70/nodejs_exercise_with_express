@@ -1,7 +1,7 @@
 {
   "name": "nodejs_exercise_with_express",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is a quick recap of Node.js using Express.",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/leesan70/nodejs_exercise_with_nodejs/issues"
   },
-  "homepage": "https://github.com/leesan70/nodejs_exercise_with_nodejs#readme"
+  "homepage": "https://github.com/leesan70/nodejs_exercise_with_nodejs#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
