@@ -24,6 +24,11 @@ app.get('/users', (req, res) => {
   res.json(users);
 })
 
+app.get('/users/:id', (req, res) => {
+  console.log(req.params.id);
+  res.end();
+})
+
 app.listen(3000, () => {
   console.log('Example app listening on port 3000!');
 });
