@@ -25,7 +25,13 @@ app.get('/users', (req, res) => {
 })
 
 app.get('/users/:id', (req, res) => {
-  console.log(req.params.id);
+  const id = parseInt(req.params.id);
+  if (!id) {
+    return res.status(400).json({
+      error: 'Incorrect id'
+    });
+  }
+  console.log(id);
   res.end();
 })
 
