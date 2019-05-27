@@ -18,11 +18,11 @@ let users = [
 
 app.get('/', (req, res) => {
   return res.send('Hello World!\n');
- });
+});
 
 app.get('/users', (req, res) => {
   return res.json(users);
-})
+});
 
 app.get('/users/:id', (req, res) => {
   const id = parseInt(req.params.id);
@@ -38,7 +38,25 @@ app.get('/users/:id', (req, res) => {
     });
   }
   return res.json(user);
-})
+});
+
+app.delete('/users/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  if (!id) {
+    return res.status(400).json({
+      error: 'Incorrect id'
+    });
+  }
+  let userIdx = users.findIndex((user) => user.id === id);
+  if (userIdx < 0) {
+    return res.status(404).json({
+      error: 'Unknown user'
+    });
+  }
+  console.log(`Deleting user with id ${id}.`);
+  users.splice(userIdx, 1);
+  return res.status(204).send();
+});
 
 app.listen(3000, () => {
   console.log('Example app listening on port 3000!');
