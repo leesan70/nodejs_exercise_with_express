@@ -2,8 +2,8 @@ const should = require('should');
 const request = require('supertest');
 const app = require('../../app');
 
-describe('GET /users', () => {
-  it('should return 200 status code', (done) => {
+describe('GET /users', function() {
+  it('should return 200 status code', function(done) {
     request(app)
       .get('/users')
       .expect(200)
@@ -13,7 +13,7 @@ describe('GET /users', () => {
       })
   });
 
-  it('should return an array', (done) => {
+  it('should return an array', function(done) {
     request(app)
       .get('/users')
       .expect(200)
