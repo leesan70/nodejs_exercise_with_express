@@ -1,6 +1,17 @@
 const should = require('should');
 const request = require('supertest');
-const app = require('../../app');
+
+let app = null;
+
+beforeEach(function() {
+  // Clears the cache so a new server instance is used for each test.
+  delete require.cache[require.resolve('../../app')];
+  app = require('../../app');
+});
+
+afterEach(function() {
+  app.close();
+});
 
 describe('GET /users', function() {
   it('should return 200 status code', function(done) {
@@ -10,7 +21,7 @@ describe('GET /users', function() {
       .end((err, res) => {
         if (err) throw err;
         done();
-      })
+      });
   });
 
   it('should return an array', function(done) {
@@ -26,6 +37,41 @@ describe('GET /users', function() {
           user.name.should.be.a.String();
         });
         done();
-      })
+      });
+  });
+});
+
+describe('GET /users/:id', function() {
+  const users = [
+    {
+      id: 1,
+      name: 'alice'
+    },
+    {
+      id: 2,
+      name: 'bek'
+    },
+    {
+      id: 3,
+      name: 'chris'
+    }
+  ];
+
+  it('should return an User with id identical to the provided id parameter', function(done) {
+    [...Array(3).keys()].map((index) => {
+      request(app)
+        .get(`/users/${index + 1}`)
+        .expect(200)
+        .end((err, res) => {
+          if (err) throw err;
+          const user = res.body;
+          user.should.have.properties('id', 'name');
+          user.id.should.be.a.Number();
+          user.id.should.equal(users[index].id);
+          user.name.should.be.a.String();
+          user.name.should.equal(users[index].name);
+        });
+    });
+    done();
   });
 });
