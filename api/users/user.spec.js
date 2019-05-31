@@ -147,3 +147,45 @@ describe('DELETE /users/:id', function() {
     });
   });
 });
+
+describe('POST /users', function() {
+  context('with proper body containing key "name"', function() {
+    it('should return 201 status code', function(done) {
+      const user = {
+        'name': 'Mike'
+      };
+      request(app)
+        .post('/users')
+        .send(user)
+        .set('Content-Type', 'application/json')
+        .set('Accept', 'application/json')
+        .expect(201)
+        .end((err, res) => {
+          if (err) throw err;
+          res.body.should.have.properties('id', 'name');
+          res.body.id.should.eql(4);
+          res.body.name.should.eql(user.name);
+          done();
+        });
+    });
+  });
+
+  context('without key "name" in the body', function() {
+    it('should return 400 status code', function(done) {
+      request(app)
+        .post('/users')
+        .send({
+          dummy: 1
+        })
+        .set('Content-Type', 'application/json')
+        .set('Accept', 'application/json')
+        .expect(400)
+        .end((err, res) => {
+          if (err) throw err;
+          res.body.should.have.property('error');
+          res.body.error.should.eql('Incorrect name');
+          done();
+        })
+    });
+  })
+});
