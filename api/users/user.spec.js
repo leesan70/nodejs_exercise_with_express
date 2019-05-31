@@ -42,36 +42,66 @@ describe('GET /users', function() {
 });
 
 describe('GET /users/:id', function() {
-  const users = [
-    {
-      id: 1,
-      name: 'alice'
-    },
-    {
-      id: 2,
-      name: 'bek'
-    },
-    {
-      id: 3,
-      name: 'chris'
-    }
-  ];
-
-  it('should return an User with id identical to the provided id parameter', function(done) {
-    [...Array(3).keys()].map((index) => {
+  context('with invalid format of id parameter', function() {    
+    it('should return 400 status code', function(done) {
       request(app)
-        .get(`/users/${index + 1}`)
-        .expect(200)
+        .get('/users/no')
+        .expect(400)
         .end((err, res) => {
           if (err) throw err;
-          const user = res.body;
-          user.should.have.properties('id', 'name');
-          user.id.should.be.a.Number();
-          user.id.should.equal(users[index].id);
-          user.name.should.be.a.String();
-          user.name.should.equal(users[index].name);
+          res.body.should.have.property('error');
+          res.body.error.should.eql('Incorrect id');
+          done();
         });
     });
-    done();
+  });
+
+  context('with non-existing id', function() {    
+    it('should return 404 status code', function(done) {
+      request(app)
+        .get('/users/100')
+        .expect(404)
+        .end((err, res) => {
+          if (err) throw err;
+          res.body.should.have.property('error');
+          res.body.error.should.eql('Unknown user');
+          done();
+        });
+    });
+  });
+
+  context('with proper id parameter', function() {
+    const users = [
+      {
+        id: 1,
+        name: 'alice'
+      },
+      {
+        id: 2,
+        name: 'bek'
+      },
+      {
+        id: 3,
+        name: 'chris'
+      }
+    ];
+  
+    it('should return an User with id identical to the provided id parameter', function(done) {
+      [...Array(3).keys()].map((index) => {
+        request(app)
+          .get(`/users/${index + 1}`)
+          .expect(200)
+          .end((err, res) => {
+            if (err) throw err;
+            const user = res.body;
+            user.should.have.properties('id', 'name');
+            user.id.should.be.a.Number();
+            user.id.should.equal(users[index].id);
+            user.name.should.be.a.String();
+            user.name.should.equal(users[index].name);
+          });
+      });
+      done();
+    });
   });
 });
