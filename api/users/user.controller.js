@@ -62,5 +62,39 @@ exports.create = (req, res) => {
   }
   models.User.create({
     name: name
-  }).then( user => res.status(201).json(user) );
+  }).then(user => res.status(201).json(user));
 };
+
+exports.update = (req, res) => {
+  const id = parseInt(req.params.id);
+  const name = req.body.name || '';
+  if (!id) {
+    return res.status(400).json({
+      error: 'Incorrect id'
+    });
+  }
+  if (!name.length) {
+    return res.status(400).json({
+      error: 'Incorrect name'
+    })
+  }
+  models.User.update({
+    name: name
+  }, {
+    where: {
+      id: id
+    }
+  })
+  .then(result => {
+    if (!result[0]) {
+      return res.status(404).json({
+        error: 'Unknown user'
+      });
+    }
+    return res.status(204).send();
+  })
+  .catch(err => {
+    console.log(err);
+    return res.status(500).send();
+  });
+}

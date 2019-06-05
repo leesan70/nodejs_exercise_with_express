@@ -187,26 +187,52 @@ describe('POST /users', function() {
           done();
         })
     });
-  })
+  });
 });
 
 describe('PUT /users/:id', function() {
   context('with proper id parameter', function() {
-    before(function() {
-      const modifiedUser = {
-        id: 1,
-        name: 'Mike'
-      }
-    });
+    context('with proper body containing key "name"', function() {
+      before(function() {
+        const modifiedUser = {
+          id: 1,
+          name: 'Mike'
+        }
+      });
 
-    it('shuold return 204 status code', function(done) {
-      request(app)
-        .put('/users/1')
-        .expect(204)
-        .end((err, res) => {
-          if (err) throw err;
-          done();
-        })
+      it('shuold return 204 status code', function(done) {
+        request(app)
+          .put('/users/1')
+          .send({
+            name: 'Mike'
+          })
+          .set('Content-Type', 'application/json')
+          .set('Accept', 'application/json')
+          .expect(204)
+          .end((err, res) => {
+            if (err) throw err;
+            done();
+          });
+      });
+    });
+    
+    context('without key "name" in the body', function() {
+      it('should return 400 status code', function(done) {
+        request(app)
+          .put('/users/1')
+          .send({
+            dummy: 1
+          })
+          .set('Content-Type', 'application/json')
+          .set('Accept', 'application/json')
+          .expect(400)
+          .end((err, res) => {
+            if (err) throw err;
+            res.body.should.have.property('error');
+            res.body.error.should.eql('Incorrect name');
+            done();
+          });
+      });
     });
   });
 
