@@ -1,15 +1,16 @@
 const Sequelize = require('sequelize');
+const config = require('./config/environments');
 const sequelize = new Sequelize(
-  'nodejs_exercise',
-  process.env.DB_USERNAME,
-  process.env.DB_PASSWORD,
+  config.mysql.database,
+  config.mysql.username,
+  config.mysql.password,
   {
     dialect: 'mysql',
     host: 'localhost',
     port: 3306,
-    logging: console.log
+    logging: null
   }
-);
+)
 
 const User = sequelize.define('user', {
   name: Sequelize.STRING
