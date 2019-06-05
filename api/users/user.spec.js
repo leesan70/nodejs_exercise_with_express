@@ -189,3 +189,52 @@ describe('POST /users', function() {
     });
   })
 });
+
+describe('PUT /users/:id', function() {
+  context('with proper id parameter', function() {
+    before(function() {
+      const modifiedUser = {
+        id: 1,
+        name: 'Mike'
+      }
+    });
+
+    it('shuold return 204 status code', function(done) {
+      request(app)
+        .put('/users/1')
+        .expect(204)
+        .end((err, res) => {
+          if (err) throw err;
+          done();
+        })
+    });
+  });
+
+  context('with invalid format of id parameter', function() {    
+    it('should return 400 status code', function(done) {
+      request(app)
+        .put('/users/no')
+        .expect(400)
+        .end((err, res) => {
+          if (err) throw err;
+          res.body.should.have.property('error');
+          res.body.error.should.eql('Incorrect id');
+          done();
+        });
+    });
+  });
+
+  context('with non-existing id', function() {   
+    it('should return 404 status code', function(done) {
+      request(app)
+        .delete('/users/100')
+        .expect(404)
+        .end((err, res) => {
+          if (err) throw err;
+          res.body.should.have.property('error');
+          res.body.error.should.eql('Unknown user');
+          done();
+        });
+    });
+  });
+});
