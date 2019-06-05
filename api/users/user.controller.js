@@ -1,3 +1,5 @@
+const models = require('../../models');
+
 let users = [
   {
     id: 1,
@@ -58,13 +60,7 @@ exports.create = (req, res) => {
       error: 'Incorrect name'
     })
   }
-  const id = users.reduce((maxId, user) => {
-    return user.id > maxId ? user.id : maxId
-  }, 0) + 1;
-  const newUser = {
-    id: id,
+  models.User.create({
     name: name
-  };
-  users.push(newUser);
-  return res.status(201).json(newUser);
+  }).then( user => res.status(201).json(user) );
 };
