@@ -1,22 +1,8 @@
-const models = require('../../models');
-
-let users = [
-  {
-    id: 1,
-    name: 'alice'
-  },
-  {
-    id: 2,
-    name: 'bek'
-  },
-  {
-    id: 3,
-    name: 'chris'
-  }
-];
+const models = require('../../models/index');
 
 exports.index = (req, res) => {
-  return res.json(users);
+  models.User.findAll()
+    .then(users => res.json(users));
 };
 
 exports.show = (req, res) => {
