@@ -14,7 +14,7 @@ app.use('/users', require('./api/users'));
 const server = app.listen(3000, () => {
   // console.log('Example app listening on port 3000!');
   // force: true resets the table upon sync
-  require('./models').sequelize.sync({force: true})
+  require('./models/index').sequelize.sync({force: true})
     .then(() => {
       console.log('Database Synced');
   });
