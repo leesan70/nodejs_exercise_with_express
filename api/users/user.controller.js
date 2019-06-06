@@ -12,13 +12,13 @@ exports.show = (req, res) => {
       error: 'Incorrect id'
     });
   }
-  let user = users.filter((user) => user.id === id)[0];
-  if (!user) {
-    return res.status(404).json({
+  models.User.findOne({
+    where: {id: id}
+  }).then(user => {
+    user ? res.json(user) : res.status(404).json({
       error: 'Unknown user'
     });
-  }
-  return res.json(user);
+  });
 };
 
 exports.destroy = (req, res) => {
@@ -28,15 +28,13 @@ exports.destroy = (req, res) => {
       error: 'Incorrect id'
     });
   }
-  let userIdx = users.findIndex((user) => user.id === id);
-  if (userIdx < 0) {
-    return res.status(404).json({
+  models.User.destroy({
+    where: {id: id}
+  }).then(affectedRows => {
+    affectedRows ? res.status(204).send() : res.status(404).json({
       error: 'Unknown user'
     });
-  }
-  console.log(`Deleting user with id ${id}.`);
-  users.splice(userIdx, 1);
-  return res.status(204).send();
+  });
 };
 
 exports.create = (req, res) => {
@@ -67,9 +65,7 @@ exports.update = (req, res) => {
   models.User.update({
     name: name
   }, {
-    where: {
-      id: id
-    }
+    where: {id: id}
   })
   .then(result => {
     if (!result[0]) {
