@@ -1,4 +1,4 @@
-const models = require('../../models/index');
+const models = require('../../db/models/index');
 
 exports.index = (req, res) => {
   models.User.findAll()
