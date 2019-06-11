@@ -4,7 +4,11 @@
   "description": "This is a quick recap of Node.js using Express.",
   "main": "app.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha api/users/user.spec.js"
+    "migrate": "npx sequelize-cli db:migrate",
+    "seed": "npx sequelize-cli db:seed:all",
+    "pretest": "npm run -s migrate && npm run -s seed",
+    "test": "node_modules/.bin/mocha api/users/user.spec.js",
+    "posttest" : "npx sequelize-cli db:migrate:undo:all"
   },
   "repository": {
     "type": "git",

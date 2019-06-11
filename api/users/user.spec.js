@@ -13,6 +13,12 @@ afterEach(function() {
   app.close();
 });
 
+// const app = require('../../app');
+
+// after(function() {
+//   app.close();
+// });
+
 describe('GET /users', function() {
   it('should return 200 status code', function(done) {
     request(app)
@@ -110,7 +116,7 @@ describe('DELETE /users/:id', function() {
   context('with proper id parameter', function() {  
     it('should return 204 status code', function(done) {
       request(app)
-        .delete('/users/1')
+        .delete('/users/3')
         .expect(204)
         .end((err, res) => {
           if (err) throw err;
