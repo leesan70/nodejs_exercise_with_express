@@ -9,10 +9,6 @@ app.get('/', (req, res) => {
   return res.send('Hello World!\n');
 });
 
-app.use('/users', require('./api/users'));
+app.use('/users', require('./app/api/users'));
 
-const server = app.listen(3000, () => {
-  // console.log('Example app listening on port 3000!');
-});
-
-module.exports = server;
+module.exports = app;

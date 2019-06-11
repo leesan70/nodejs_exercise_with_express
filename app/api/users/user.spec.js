@@ -5,15 +5,15 @@ let app = null;
 
 beforeEach(function() {
   // Clears the cache so a new server instance is used for each test.
-  delete require.cache[require.resolve('../../app')];
-  app = require('../../app');
+  delete require.cache[require.resolve('../../../bin/www')];
+  app = require('../../../bin/www');
 });
 
 afterEach(function() {
   app.close();
 });
 
-// const app = require('../../app');
+// const app = require('../../bin/www');
 
 // after(function() {
 //   app.close();
