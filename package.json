@@ -6,9 +6,9 @@
   "scripts": {
     "migrate": "npx sequelize-cli db:migrate",
     "seed": "npx sequelize-cli db:seed:all",
-    "pretest": "npm run -s migrate && npm run -s seed",
-    "test": "node_modules/.bin/mocha api/users/user.spec.js",
-    "posttest" : "npx sequelize-cli db:migrate:undo:all"
+    "pretest": "NODE_ENV=test npm run -s migrate && NODE_ENV=test npm run -s seed",
+    "test": "NODE_ENV=test node_modules/.bin/mocha api/users/user.spec.js",
+    "posttest" : "NODE_ENV=test npx sequelize-cli db:migrate:undo:all"
   },
   "repository": {
     "type": "git",
